@@ -33,25 +33,34 @@ var ambientLight = new THREE.AmbientLight(0x999999 );
     scene.add( lights[2] );
 
 
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-
+var spriteMap = new THREE.TextureLoader().load( '../img/circleSprite.png' );
 
 var dotMat = new THREE.SpriteMaterial({
+  map: spriteMap,
 	color: 0xffffff,
-
 });
 
 var dots = new THREE.Geometry();
+for ( var i = 0; i < 100; i ++ ) {
+  let particle = new THREE.Sprite( dotMat );
+  particle.scale.set(10, 10, 1)
+  particle.position.x = Math.random() * 2 - 1;
+  particle.position.y = Math.random() * 2 - 1;
+  particle.position.z = Math.random() * 2 - 1;
+  particle.position.normalize();
+  particle.position.multiplyScalar( Math.random() * 10 + 450 );
+  particle.scale.x = particle.scale.y = 10;
+  scene.add( particle );
+  dots.vertices.push( particle.position );
+}
+var line = new THREE.Line( dots, new THREE.LineBasicMaterial( {
+  color: 0x42f4cb,
+  opacity: 0.5
+}));
+scene.add( line );
 
 
-
-let geometry = new THREE.TetrahedronGeometry(4,1);
+let geometry = new THREE.TetrahedronGeometry(30,1);
 
 
 let material = new THREE.MeshPhongMaterial({
@@ -78,48 +87,76 @@ scene.add(cube1);
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
+var windowHalfX=window.innerWidth / 2,
+windowHalfY= window.innerHeight / 2
+
 window.addEventListener( 'mousemove', onMouseMove, false );
+document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize() {
+
+  	windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
 function onMouseMove( event ) {
 
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-  // console.log(cube.position.x === mouse.x);
+
 }
+function onDocumentTouchStart( event ) {
 
+		if ( event.touches.length > 1 ) {
 
+    	event.preventDefault();
 
+      mouse.x = event.touches[ 0 ].pageX;
+      mouse.y = event.touches[ 0 ].pageY - windowHalfY;
 
+    }
+	}
 
+function onDocumentTouchMove( event ) {
 
-let currentMesh;
-var fov = camera.fov, zoom = 1.0, inc = -0.007;
+	if ( event.touches.length == 1 ) {
 
+  	event.preventDefault();
+
+    mouse.x = event.touches[ 0 ].pageX - windowHalfX;
+    mouse.y = event.touches[ 0 ].pageY - windowHalfY;
+
+	}
+}
 function render (){
+  camera.position.x += ( (mouse.x * 100) - camera.position.x ) * .05;
+  camera.position.y += ( - (mouse.y * 100) + 200 - camera.position.y ) * .05;
+  camera.lookAt( scene.position );
   raycaster.setFromCamera( mouse, camera );
 
   var intersects = raycaster.intersectObjects( scene.children );
 
 
-  camera.fov = fov * zoom;
-      camera.updateProjectionMatrix();
 
-      zoom += inc;
-      if ( zoom <= 0.2 || zoom >= 1.0 ){
-        inc = 0;
-        if (intersects.length > 0) {
-          if (intersects[0].object != currentMesh) {
-            currentMesh = intersects[0].object;
-            currentMesh.currentHex = currentMesh.material.color.getHex();
-            intersects[0].object.material.color.set( 0x42f4cb );
-          }
-        }
-         else if (intersects.length <= 1) {
-           if (currentMesh) {
-             currentMesh.material.color.set( 0xffffff )
-             currentMesh = null;
-           }
-         }
-       }
+  if (intersects.length > 0 && intersects[0].object.type !== 'Line') {
+    if (intersects[0].object != currentMesh) {
+      currentMesh = intersects[0].object;
+      currentMesh.currentHex = currentMesh.material.color.getHex();
+      intersects[0].object.material.color.set( 0x42f4cb );
+    }
+  }
+   else if (intersects.length <= 1) {
+     if (currentMesh) {
+       currentMesh.material.color.set( 0xffffff )
+       currentMesh = null;
+     }
+   }
+
 
   requestAnimationFrame(render);
 
@@ -132,6 +169,14 @@ function render (){
 
 
 render();
+
+
+
+
+
+let currentMesh;
+var fov = camera.fov, zoom = 1.0, inc = -0.007;
+
 
 function rotate(){
    camera.lookAt( scene.position );
@@ -159,7 +204,13 @@ function rotate(){
 class Home extends Component {
   render() {
     return (
-      <div className='enter'></div>
+      <div>
+        <div className='enter'>David Leonhardt</div>
+        <div className='container'>
+          <div className='menu'></div>
+        </div>
+
+      </div>
     );
   }
 }
