@@ -207,7 +207,9 @@ class Home extends Component {
       <div>
         <div className='enter'>David Leonhardt</div>
         <div className='container'>
-          <div className='menu'></div>
+          <div className='menu'>
+            <div className='instruct'>Click The Polygon to Enter</div>
+          </div>
         </div>
 
       </div>
