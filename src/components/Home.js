@@ -88,11 +88,13 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
 var windowHalfX=window.innerWidth / 2,
-windowHalfY= window.innerHeight / 2
+windowHalfY= window.innerHeight / 2,
+click = false
 
 window.addEventListener( 'mousemove', onMouseMove, false );
 document.addEventListener( 'touchstart', onDocumentTouchStart, false );
 document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+document.addEventListener( 'click', onClick, false );
 window.addEventListener( 'resize', onWindowResize, false );
 function onWindowResize() {
 
@@ -105,22 +107,24 @@ function onWindowResize() {
 
 }
 function onMouseMove( event ) {
-
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
 }
 function onDocumentTouchStart( event ) {
 
-		if ( event.touches.length > 1 ) {
+	if ( event.touches.length > 1 ) {
 
-    	event.preventDefault();
+  	event.preventDefault();
 
-      mouse.x = event.touches[ 0 ].pageX;
-      mouse.y = event.touches[ 0 ].pageY - windowHalfY;
+    mouse.x = event.touches[ 0 ].pageX;
+    mouse.y = event.touches[ 0 ].pageY - windowHalfY;
 
-    }
-	}
+  }
+}
+
+function onClick( event ) {
+  click = true;
+}
 
 function onDocumentTouchMove( event ) {
 
@@ -141,14 +145,13 @@ function render (){
 
   var intersects = raycaster.intersectObjects( scene.children );
 
-
-
   if (intersects.length > 0 && intersects[0].object.type !== 'Line') {
     if (intersects[0].object != currentMesh) {
       currentMesh = intersects[0].object;
       currentMesh.currentHex = currentMesh.material.color.getHex();
       intersects[0].object.material.color.set( 0x42f4cb );
     }
+
   }
    else if (intersects.length <= 1) {
      if (currentMesh) {
@@ -156,6 +159,7 @@ function render (){
        currentMesh = null;
      }
    }
+
 
 
   requestAnimationFrame(render);
@@ -182,15 +186,12 @@ function rotate(){
    camera.lookAt( scene.position );
 
    cube.rotation.y -= 0.01;
-   // edges.rotation.y -= 0.01;
    cube.rotation.x -= 0.01;
-   // edges.rotation.x -= 0.01;
+   // cube.rotation.z -= 0.01;
 
    cube1.rotation.y += 0.01;
-   // edges1.rotation.y += 0.01;
    cube1.rotation.x += 0.01;
-   // edges1.rotation.x += 0.01;
-
+   // cube1.rotation.z += 0.01;
 
    renderer.render( scene, camera );
 }
