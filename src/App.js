@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import Home from './components/Home';
-
-class App extends Component {
-  render() {
-    return (
-      <Home />
-    );
-  }
-}
-
-export default App;
+// import React, { Component } from 'react';
+// import Home from './components/Home';
+// import { BrowserRouter, Route } from 'react-router-dom';
+//
+//
+// class App extends Component {
+//   render() {
+//     return (
+//       <div>here</div>
+//     );
+//   }
+// }
+//
+// export default App;
