@@ -3,6 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: #11e8bb; /* Old browsers */
+
   background: -moz-linear-gradient(top,  #11e8bb 0%, #8200c9 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top,  #11e8bb 0%,#8200c9 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom,  #11e8bb 0%,#8200c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -96,13 +97,57 @@ body {
           animation: fadein 3s;
 }
 
-img {
+.logo {
   width: 3vw;
   height: auto;
 }
 
-img:hover {
+.logo:hover {
   opacity: 0.5;
+}
+.header{
+  font-size: 60px;
+  font-family: 'Mina', sans-serif;
+  background-image: #FC466B;
+  background-image: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);
+  background-image: linear-gradient(to right, #3F5EFB, #FC466B);
+  color:transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein 3s; /* Firefox < 16 */
+      -ms-animation: fadein 3s; /* Internet Explorer */
+       -o-animation: fadein 3s; /* Opera < 12.1 */
+          animation: fadein 3s;
+}
+
+.centerProj {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto
+}
+
+.projects {
+  width: 60vw;
+  height: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(186, 186, 186, 0.5);
+}
+.project {
+  width: 40vw;
+  height: auto;
+  opacity: 0.8;
+  padding: 4vh;
+}
+.label {
+  font-family: 'Mina', sans-serif;
 }
 
 @keyframes fadein {
