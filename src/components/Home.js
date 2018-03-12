@@ -40,8 +40,7 @@ class Home extends Component {
     });
     const dots = new THREE.Geometry();
     const line = new THREE.Line( dots, new THREE.LineBasicMaterial( {
-      color: 0xffffff,
-      opacity: 0.5
+      color: 0xffffff
     }));
     const cube = new THREE.Mesh(this.state.geometry,this.state.material);
     const cube1 = cube.clone();
