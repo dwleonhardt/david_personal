@@ -132,7 +132,7 @@ class Home extends Component {
   }
 
   onClick = ( event ) => {
-    if (this.state.intersects.length > 0 && this.state.intersects[0].object.type !== 'Line') {
+    if (this.state.intersects.length > 0 && this.state.intersects[0].object.type !== 'Line' && this.state.camera.position.y >= 10) {
       let copy = Object.assign({}, this.state);
       if (this.state.about) {
         copy.polyClick = false;
@@ -175,7 +175,7 @@ class Home extends Component {
 
     copy.intersects = intersects;
 
-    if (intersects.length > 0 && intersects[0].object.type !== 'Line') {
+    if (intersects.length > 0 && intersects[0].object.type !== 'Line' && this.state.camera.position.y >= 10) {
       if (intersects[0].object !== this.state.currentMesh) {
         copy.currentMesh = intersects[0].object;
         copy.currentMesh.currentHex = copy.currentMesh.material.color.getHex();
@@ -221,7 +221,7 @@ class Home extends Component {
 
   render() {
     if (this.state.about) {
-      return <About />
+      return <About state={this.state}/>
     }
     else {
       return (
